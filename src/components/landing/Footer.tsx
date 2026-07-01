@@ -54,6 +54,14 @@ const Footer = () => {
           >
             Terms
           </a>
+          <a
+            href="https://omni.dev/legal/cookies"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            Cookies
+          </a>
         </nav>
       </div>
     </footer>
