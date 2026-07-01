@@ -38,6 +38,22 @@ const Footer = () => {
           >
             Omni
           </a>
+          <a
+            href="https://omni.dev/legal/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            Privacy
+          </a>
+          <a
+            href="https://omni.dev/legal/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            Terms
+          </a>
         </nav>
       </div>
     </footer>
