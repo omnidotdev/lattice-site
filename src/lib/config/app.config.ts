@@ -24,7 +24,7 @@ const app = {
     url: "https://omni.dev",
   },
   links: {
-    docs: "https://docs.omni.dev/grid/lattice",
+    docs: "https://docs.omni.dev/products/lattice",
     github: "https://github.com/omnidotdev/lattice",
   },
 };

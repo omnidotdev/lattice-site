@@ -1,6 +1,5 @@
-import { ArrowRight, Grid3x3 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import app from "@/lib/config/app.config";
 
@@ -9,11 +8,6 @@ import app from "@/lib/config/app.config";
  */
 const HeroSection = () => (
   <section className="flex flex-col items-center gap-8 px-6 pt-24 pb-16 text-center md:pt-32">
-    <Badge variant="secondary" className="gap-1.5">
-      <Grid3x3 className="size-3" />
-      Omnigraph Toolkit
-    </Badge>
-
     <div className="flex max-w-3xl flex-col gap-4">
       <h1 className="font-bold text-4xl tracking-tight md:text-6xl">
         {app.tagline}
