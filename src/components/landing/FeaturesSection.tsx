@@ -1,101 +1,75 @@
-import {
-  Cable,
-  Layers,
-  Lock,
-  Network,
-  Puzzle,
-  Radio,
-  RefreshCw,
-  Zap,
-} from "lucide-react";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+const strip = [
+  "Federation v2",
+  "Subscriptions + @defer",
+  "WASI plugins",
+  "MCP endpoint",
+  "Apache-2.0",
+];
 
 const features = [
   {
-    icon: Network,
-    title: "Unified Omnigraph",
+    title: "Query planning",
+    tag: "federation v2",
     description:
-      "Compose multiple API services into a single, federated graph endpoint",
+      "Plans and executes one client query across many subgraphs, fetching only what each service owns and stitching the result.",
   },
   {
-    icon: Layers,
-    title: "Schema Federation",
+    title: "Real-time",
+    tag: "subscriptions + @defer",
     description:
-      "Federate subgraphs from independent services into a cohesive supergraph",
+      "WebSocket subscriptions across services, and @defer so slow fields stream in after the fast ones.",
   },
   {
-    icon: Cable,
-    title: "API Gateway",
+    title: "Governed at the edge",
+    tag: "jwt · limits · apq",
     description:
-      "Route, transform, and orchestrate requests across your service mesh",
+      "Directive auth, rate limiting, depth and complexity caps, and persisted queries, enforced before a subgraph is ever hit.",
   },
   {
-    icon: Zap,
-    title: "High Performance",
+    title: "Built to extend",
+    tag: "wasm · mcp · contracts",
     description:
-      "Built in Rust for minimal latency and maximum throughput at the edge",
-  },
-  {
-    icon: Puzzle,
-    title: "Plugin System",
-    description:
-      "Extend functionality with composable plugins for auth, caching, and more",
-  },
-  {
-    icon: Lock,
-    title: "Secure by Default",
-    description:
-      "Built-in authentication, rate limiting, and schema validation",
-  },
-  {
-    icon: Radio,
-    title: "Real-Time & Streaming",
-    description:
-      "Live GraphQL subscriptions over WebSocket, with @defer for progressive delivery",
-  },
-  {
-    icon: RefreshCw,
-    title: "Live Schema Updates",
-    description:
-      "Hot-reload schema changes without downtime or service restarts",
+      "WASI plugins in any language, a native MCP endpoint, schema contracts, response caching, Prometheus, and OpenTelemetry.",
   },
 ];
 
 /**
- * Features section.
+ * Features section: a compact capability strip over a spec-style list.
  */
 const FeaturesSection = () => (
-  <section className="px-6 py-24">
+  <section className="px-6 py-10">
     <div className="mx-auto max-w-6xl">
-      <div className="mb-12 text-center">
-        <h2 className="mb-4 font-bold text-3xl tracking-tight">
-          Everything you need
-        </h2>
-        <p className="mx-auto max-w-2xl text-muted-foreground">
-          A comprehensive toolkit for building, managing, and federating API
-          services into a unified omnigraph
-        </p>
+      <div className="flex flex-wrap gap-x-7 gap-y-2 border-border/60 border-y py-4 font-mono text-muted-foreground text-xs">
+        {strip.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map(({ icon: Icon, title, description }) => (
-          <Card key={title} className="border-border/50 bg-card/50">
-            <CardHeader className="pb-2">
-              <Icon className="mb-2 size-5 text-primary" />
-              <CardTitle className="text-base">{title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>{description}</CardDescription>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="py-16">
+        <p className="mb-8 font-mono text-muted-foreground text-xs uppercase tracking-wider">
+          {"// what it does"}
+        </p>
+
+        <div className="grid">
+          {features.map(({ title, tag, description }) => (
+            <div
+              key={title}
+              className="grid gap-6 border-border/60 border-t py-5 last:border-b md:grid-cols-[210px_1fr]"
+            >
+              <div>
+                <h3 className="font-semibold text-lg tracking-tight">
+                  {title}
+                </h3>
+                <span className="mt-2 inline-block font-mono text-primary text-xs">
+                  {tag}
+                </span>
+              </div>
+              <p className="max-w-[60ch] text-muted-foreground">
+                {description}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
