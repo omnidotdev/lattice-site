@@ -314,9 +314,9 @@ const HeroSection = () => (
     <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
       <div className="flex flex-col gap-6">
         <h1 className="font-bold text-4xl tracking-tight md:text-6xl">
-          One graph.
+          One graph API
           <br />
-          Every service.
+          for every service.
         </h1>
 
         <p className="max-w-md text-lg text-muted-foreground">
