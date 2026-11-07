@@ -132,3 +132,73 @@
     scrollbar-width: none;
   }
 }
+
+/* Hero motion: drifting brand shapes, a floating topology, edges that draw in,
+   and a pulsing core. All disabled under prefers-reduced-motion. */
+@keyframes lat-drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(10px, -16px) rotate(9deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+@keyframes lat-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes lat-draw {
+  from {
+    stroke-dashoffset: 320;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes lat-glow {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.14);
+  }
+}
+
+.lat-shape {
+  animation: lat-drift 16s ease-in-out infinite;
+}
+.lat-float {
+  animation: lat-float 6s ease-in-out infinite;
+}
+.lat-edge {
+  stroke-dasharray: 320;
+  animation: lat-draw 1.5s ease-out forwards;
+}
+.lat-glow {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: lat-glow 3.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lat-shape,
+  .lat-float,
+  .lat-edge,
+  .lat-glow {
+    animation: none;
+  }
+  .lat-edge {
+    stroke-dashoffset: 0;
+  }
+}

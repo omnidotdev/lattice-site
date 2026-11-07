@@ -22,10 +22,25 @@ const label = {
 } as const;
 const coreLabel = { ...label, fill: "var(--primary-foreground)" } as const;
 
+// users, products, orders -> lattice, then lattice -> client.
+const EDGES = [
+  "M90,46 C180,46 180,120 210,120",
+  "M90,120 C150,120 170,120 200,120",
+  "M90,194 C180,194 180,120 210,120",
+  "M240,120 C310,120 320,120 360,120",
+];
+
+const services = [
+  { label: "users", y: 30 },
+  { label: "products", y: 104 },
+  { label: "orders", y: 178 },
+];
+
 /**
- * Supergraph topology: independent services federated through Lattice into a
- * single graph the client queries. Colors resolve from theme CSS variables so
- * it adapts to light and dark.
+ * Animated supergraph topology: services federate through Lattice into one
+ * graph the client queries. Edges draw in, query dots flow along them, and the
+ * core pulses. Colors resolve from theme variables; motion respects
+ * prefers-reduced-motion (handled in CSS).
  */
 const GraphDiagram = () => (
   <svg
@@ -35,27 +50,54 @@ const GraphDiagram = () => (
     aria-label="Independent services federated through Lattice into one client graph"
   >
     <title>Services federated through Lattice</title>
-    <path style={edge} d="M90,46 C180,46 180,120 210,120" />
-    <path style={edge} d="M90,120 C150,120 170,120 200,120" />
-    <path style={edge} d="M90,194 C180,194 180,120 210,120" />
-    <path style={edge} d="M240,120 C310,120 320,120 360,120" />
 
-    <rect style={node} x="20" y="30" width="70" height="32" rx="8" />
-    <text style={label} x="55" y="50" textAnchor="middle">
-      users
-    </text>
-    <rect style={node} x="20" y="104" width="70" height="32" rx="8" />
-    <text style={label} x="55" y="124" textAnchor="middle">
-      products
-    </text>
-    <rect style={node} x="20" y="178" width="70" height="32" rx="8" />
-    <text style={label} x="55" y="198" textAnchor="middle">
-      orders
-    </text>
+    {EDGES.map((d, i) => (
+      <path
+        key={d}
+        className="lat-edge"
+        style={{ ...edge, animationDelay: `${i * 0.15}s` }}
+        d={d}
+      />
+    ))}
 
+    {/* query dots flowing through the graph */}
+    {EDGES.map((d, i) => (
+      <circle key={`dot-${d}`} r="3" fill="var(--primary)">
+        <animateMotion
+          dur="2.6s"
+          begin={`${0.6 + i * 0.5}s`}
+          repeatCount="indefinite"
+          path={d}
+          keyPoints="0;1"
+          keyTimes="0;1"
+          calcMode="linear"
+        />
+      </circle>
+    ))}
+
+    {services.map((s, i) => (
+      <g
+        key={s.label}
+        className="lat-float"
+        style={{ animationDelay: `${i * 0.8}s` }}
+      >
+        <rect style={node} x="20" y={s.y} width="70" height="32" rx="8" />
+        <text style={label} x="55" y={s.y + 20} textAnchor="middle">
+          {s.label}
+        </text>
+      </g>
+    ))}
+
+    <circle
+      className="lat-glow"
+      cx="225"
+      cy="120"
+      r="42"
+      fill="var(--primary)"
+    />
     <circle style={core} cx="225" cy="120" r="30" />
     <text style={coreLabel} x="225" y="124" textAnchor="middle">
-      lattice
+      {app.name.toLowerCase()}
     </text>
 
     <rect style={node} x="360" y="104" width="60" height="32" rx="8" />
@@ -65,11 +107,28 @@ const GraphDiagram = () => (
   </svg>
 );
 
+const shapes = [
+  "top-8 -left-6 size-16 rotate-12",
+  "top-40 right-10 size-10 -rotate-6",
+  "bottom-10 left-1/3 size-20 rotate-6",
+];
+
 /**
  * Hero section.
  */
 const HeroSection = () => (
-  <section className="px-6 pt-20 pb-16 md:pt-28">
+  <section className="relative overflow-hidden px-6 pt-20 pb-16 md:pt-28">
+    {/* drifting brand shapes */}
+    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+      {shapes.map((cls, i) => (
+        <span
+          key={cls}
+          className={`lat-shape absolute rounded-[10px] border border-primary/20 bg-primary/5 ${cls}`}
+          style={{ animationDelay: `${i * 2.5}s` }}
+        />
+      ))}
+    </div>
+
     <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
       <div className="flex flex-col gap-6">
         <h1 className="font-bold text-4xl tracking-tight md:text-6xl">

@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Grid3x3 } from "lucide-react";
 
-import { ThemeToggle } from "@/components/core";
+import { Logo, ThemeToggle } from "@/components/core";
 import { Button } from "@/components/ui/button";
 import app from "@/lib/config/app.config";
 
@@ -11,9 +10,8 @@ import app from "@/lib/config/app.config";
 const Header = () => (
   <header className="sticky top-0 z-50 border-border/50 border-b bg-background/80 backdrop-blur-md">
     <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-      <Link to="/" className="flex items-center gap-2 font-semibold">
-        <Grid3x3 className="size-5 text-primary" />
-        <span>{app.name}</span>
+      <Link to="/" aria-label={app.name}>
+        <Logo />
       </Link>
 
       <nav className="flex items-center gap-2">
