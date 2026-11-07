@@ -6,3 +6,6 @@ dist/
 
 # environment
 .env*.local
+
+# TS incremental build info
+tsconfig.tsbuildinfo
