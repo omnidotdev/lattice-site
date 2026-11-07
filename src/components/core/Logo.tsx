@@ -1,26 +1,23 @@
 import app from "@/lib/config/app.config";
 
 /**
- * Brand mark. PLACEHOLDER: this is a stand-in grid glyph until the real logo
- * lands. When it does, replace the body of `LogoMark` with the final asset
- * (an inline SVG, or an <img> from /public) and keep the same box size.
+ * Brand mark: the interlaced Lattice knot, traced to vector. Uses currentColor
+ * so callers set the color (green via `text-primary` by default).
  */
-const LogoMark = () => (
-  <span
+const LogoMark = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 128.448579 130"
+    className={className}
+    fill="currentColor"
     aria-hidden
-    data-logo-placeholder
-    className="grid size-6 grid-cols-3 grid-rows-3 gap-[2px]"
   >
-    <span className="rounded-[1px] bg-primary" />
-    <span className="rounded-[1px] bg-primary/30" />
-    <span className="rounded-[1px] bg-primary/30" />
-    <span className="rounded-[1px] bg-primary/30" />
-    <span className="rounded-[1px] bg-primary" />
-    <span className="rounded-[1px] bg-primary/30" />
-    <span className="rounded-[1px] bg-primary/30" />
-    <span className="rounded-[1px] bg-primary/30" />
-    <span className="rounded-[1px] bg-primary" />
-  </span>
+    <title>Lattice</title>
+    <g transform="translate(-23,150) scale(0.1,-0.1)">
+      <path d="M728 1403 c-138 -139 -138 -155 -3 -293 l85 -86 -185 -188 c-223 -227 -219 -214 -112 -322 l72 -73 57 47 57 47 -44 45 c-25 25 -45 50 -45 55 0 5 64 74 142 152 l142 143 38 -37 38 -37 53 52 52 52 -145 145 -144 145 44 45 44 45 59 -57 58 -58 44 50 c24 28 44 53 45 56 0 3 -38 42 -84 87 -79 77 -86 82 -127 82 -43 0 -48 -4 -141 -97z" />
+      <path d="M1145 1166 l-50 -44 31 -34 c66 -72 72 -55 -77 -204 -73 -74 -138 -134 -143 -134 -6 0 -25 14 -43 32 l-33 32 -50 -49 -50 -49 122 -123 122 -123 -44 -45 c-53 -54 -57 -54 -92 -13 l-26 32 -54 -49 c-29 -28 -54 -55 -56 -61 -1 -5 26 -38 62 -72 58 -56 68 -62 107 -62 40 0 47 5 145 101 151 149 154 169 46 281 l-66 69 139 139 139 140 43 -42 43 -42 -50 -50 -49 -50 -31 29 -31 29 -49 -49 -49 -50 59 -62 c52 -56 63 -63 97 -63 35 0 45 7 144 109 158 163 158 163 -44 369 -83 83 -153 152 -156 152 -3 0 -28 -20 -56 -44z" />
+      <path d="M348 1020 l-118 -119 0 -48 c1 -46 4 -52 74 -125 40 -43 78 -78 83 -78 12 0 93 83 93 96 0 5 -18 28 -40 49 -22 21 -40 44 -40 50 0 13 92 105 106 105 5 0 30 -20 54 -45 l44 -45 48 47 c26 26 48 51 48 56 0 5 -30 42 -67 81 -124 133 -131 132 -285 -24z" />
+    </g>
+  </svg>
 );
 
 /**
@@ -28,7 +25,7 @@ const LogoMark = () => (
  */
 const Logo = () => (
   <span className="flex items-center gap-2.5 font-semibold tracking-tight">
-    <LogoMark />
+    <LogoMark className="size-6 text-primary" />
     <span>{app.name}</span>
   </span>
 );
