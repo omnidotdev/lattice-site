@@ -1,10 +1,10 @@
 import {
   Cable,
-  Globe,
   Layers,
   Lock,
   Network,
   Puzzle,
+  Radio,
   RefreshCw,
   Zap,
 } from "lucide-react";
@@ -55,10 +55,10 @@ const features = [
       "Built-in authentication, rate limiting, and schema validation",
   },
   {
-    icon: Globe,
-    title: "Protocol Agnostic",
+    icon: Radio,
+    title: "Real-Time & Streaming",
     description:
-      "Connect GraphQL, REST, gRPC, and WebSocket services seamlessly",
+      "Live GraphQL subscriptions over WebSocket, with @defer for progressive delivery",
   },
   {
     icon: RefreshCw,

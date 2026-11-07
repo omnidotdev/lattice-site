@@ -5,9 +5,9 @@ const app = {
   name: "Lattice",
   // mirrors catalog SSOT (omni-api products.ts `icon`)
   icon: "🔲",
-  tagline: "APIs Unified, Omnigraph Ignited",
+  tagline: "APIs unified, Omnigraph ignited",
   description:
-    "An omnigraph toolkit for managing, connecting, and federating API services into a unified graph",
+    "A comprehensive omnigraph toolkit for managing and connecting various API services under a unified framework, addressing the challenges of API service sprawl.",
   keywords: [
     "graphql",
     "federation",
