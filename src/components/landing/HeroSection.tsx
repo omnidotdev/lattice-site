@@ -8,6 +8,14 @@ const chip = {
   stroke: "var(--border)",
   strokeWidth: 1.5,
 } as const;
+// Clients consume the unified graph, so they carry a subtle brand tint.
+const clientChip = {
+  fill: "var(--primary)",
+  fillOpacity: 0.1,
+  stroke: "var(--primary)",
+  strokeOpacity: 0.45,
+  strokeWidth: 1.5,
+} as const;
 const edge = {
   stroke: "var(--primary)",
   strokeWidth: 1.6,
@@ -19,23 +27,26 @@ const chipLabel = {
   fontSize: 12,
   fontWeight: 600,
 } as const;
-const icon = {
-  stroke: "var(--muted-foreground)",
+const iconBase = {
   fill: "none",
   strokeWidth: 2,
   strokeLinecap: "round",
   strokeLinejoin: "round",
 } as const;
+const icon = { ...iconBase, stroke: "var(--muted-foreground)" } as const;
+const clientIcon = { ...iconBase, stroke: "var(--primary)" } as const;
 
-// users, products, orders -> lattice, then lattice -> client.
+// services -> lattice (converge at 232,100), then lattice -> clients (from 288,100).
 const EDGES = [
-  "M118,43 C178,43 182,108 210,108",
-  "M118,121 C172,121 184,112 206,111",
-  "M118,199 C178,199 182,114 210,114",
-  "M262,111 C305,111 322,111 350,111",
+  "M118,43 C182,43 192,100 232,100",
+  "M118,121 C188,121 204,100 232,100",
+  "M118,199 C182,199 192,100 232,100",
+  "M288,100 C332,100 342,43 402,43",
+  "M288,100 C340,100 352,121 402,121",
+  "M288,100 C332,100 342,199 402,199",
 ];
 
-type IconName = "users" | "package" | "cart";
+type IconName = "users" | "package" | "cart" | "globe" | "smartphone" | "bot";
 
 const ICONS: Record<IconName, React.ReactNode> = {
   users: (
@@ -61,35 +72,65 @@ const ICONS: Record<IconName, React.ReactNode> = {
       <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
     </>
   ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+      <path d="M2 12h20" />
+    </>
+  ),
+  smartphone: (
+    <>
+      <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+      <path d="M12 18h.01" />
+    </>
+  ),
+  bot: (
+    <>
+      <path d="M12 8V4H8" />
+      <rect width="16" height="12" x="4" y="8" rx="2" />
+      <path d="M2 14h2" />
+      <path d="M20 14h2" />
+      <path d="M15 13v2" />
+      <path d="M9 13v2" />
+    </>
+  ),
 };
 
-const services: { label: string; y: number; name: IconName }[] = [
+type Chip = { label: string; y: number; name: IconName };
+
+const services: Chip[] = [
   { label: "Users", y: 26, name: "users" },
   { label: "Products", y: 104, name: "package" },
   { label: "Orders", y: 182, name: "cart" },
 ];
+const clients: Chip[] = [
+  { label: "Web", y: 26, name: "globe" },
+  { label: "Mobile", y: 104, name: "smartphone" },
+  { label: "AI agent", y: 182, name: "bot" },
+];
 
 /**
- * Animated supergraph topology. Three subgraphs (each with its own icon)
- * federate through the Lattice mark into one graph, delivered to a prominent,
- * branded client node. Edges draw in, query dots flow (hidden until their run
- * begins so none park at the origin), and the core pulses. Colors resolve from
- * theme variables; motion respects prefers-reduced-motion.
+ * Animated supergraph topology: services (left) federate through the Lattice
+ * mark into one graph, delivered to brand-tinted clients (right). Edges meet
+ * the core at its center; query dots flow (hidden until their run begins);
+ * the core pulses. Colors resolve from theme variables; motion respects
+ * prefers-reduced-motion.
  */
 const GraphDiagram = () => (
   <svg
-    viewBox="0 0 460 250"
+    viewBox="0 0 520 250"
     className="h-auto w-full"
     role="img"
-    aria-label="Three services, each with an icon, federated through Lattice into one graph delivered to the client"
+    aria-label="Services federated through Lattice into one graph, delivered to web, mobile, and AI-agent clients"
   >
-    <title>Services federated through Lattice into one client graph</title>
+    <title>Services federated through Lattice to its clients</title>
 
     {EDGES.map((d, i) => (
       <path
         key={d}
         className="lat-edge"
-        style={{ ...edge, animationDelay: `${i * 0.15}s` }}
+        style={{ ...edge, animationDelay: `${i * 0.12}s` }}
         d={d}
       />
     ))}
@@ -99,12 +140,12 @@ const GraphDiagram = () => (
         <set
           attributeName="opacity"
           to="1"
-          begin={`${0.6 + i * 0.5}s`}
+          begin={`${0.6 + i * 0.4}s`}
           fill="freeze"
         />
         <animateMotion
           dur="2.6s"
-          begin={`${0.6 + i * 0.5}s`}
+          begin={`${0.6 + i * 0.4}s`}
           repeatCount="indefinite"
           path={d}
           keyPoints="0;1"
@@ -130,15 +171,41 @@ const GraphDiagram = () => (
       </g>
     ))}
 
+    {clients.map((c, i) => (
+      <g
+        key={c.label}
+        className="lat-float"
+        style={{ animationDelay: `${0.4 + i * 0.8}s` }}
+      >
+        <rect
+          style={clientChip}
+          x="402"
+          y={c.y}
+          width="106"
+          height="34"
+          rx="9"
+        />
+        <g
+          style={clientIcon}
+          transform={`translate(414 ${c.y + 10}) scale(0.6)`}
+        >
+          {ICONS[c.name]}
+        </g>
+        <text style={chipLabel} x="440" y={c.y + 22}>
+          {c.label}
+        </text>
+      </g>
+    ))}
+
     {/* lattice core: the brand mark with the label beneath */}
     <circle
       className="lat-glow"
-      cx="235"
+      cx="260"
       cy="100"
       r="40"
       fill="var(--primary)"
     />
-    <g transform="translate(209 74) scale(0.405)" fill="var(--primary)">
+    <g transform="translate(234 74) scale(0.405)" fill="var(--primary)">
       <g transform="translate(-23,150) scale(0.1,-0.1)">
         <path d="M728 1403 c-138 -139 -138 -155 -3 -293 l85 -86 -185 -188 c-223 -227 -219 -214 -112 -322 l72 -73 57 47 57 47 -44 45 c-25 25 -45 50 -45 55 0 5 64 74 142 152 l142 143 38 -37 38 -37 53 52 52 52 -145 145 -144 145 44 45 44 45 59 -57 58 -58 44 50 c24 28 44 53 45 56 0 3 -38 42 -84 87 -79 77 -86 82 -127 82 -43 0 -48 -4 -141 -97z" />
         <path d="M1145 1166 l-50 -44 31 -34 c66 -72 72 -55 -77 -204 -73 -74 -138 -134 -143 -134 -6 0 -25 14 -43 32 l-33 32 -50 -49 -50 -49 122 -123 122 -123 -44 -45 c-53 -54 -57 -54 -92 -13 l-26 32 -54 -49 c-29 -28 -54 -55 -56 -61 -1 -5 26 -38 62 -72 58 -56 68 -62 107 -62 40 0 47 5 145 101 151 149 154 169 46 281 l-66 69 139 139 139 140 43 -42 43 -42 -50 -50 -49 -50 -31 29 -31 29 -49 -49 -49 -50 59 -62 c52 -56 63 -63 97 -63 35 0 45 7 144 109 158 163 158 163 -44 369 -83 83 -153 152 -156 152 -3 0 -28 -20 -56 -44z" />
@@ -146,40 +213,12 @@ const GraphDiagram = () => (
       </g>
     </g>
     <text
-      x="235"
+      x="260"
       y="150"
       textAnchor="middle"
       style={{ fill: "var(--foreground)", fontSize: 13, fontWeight: 700 }}
     >
       Lattice
-    </text>
-
-    {/* client: the branded, prominent destination for the unified graph */}
-    <rect x="350" y="81" width="98" height="60" rx="14" fill="var(--primary)" />
-    <g
-      stroke="var(--primary-foreground)"
-      fill="var(--primary-foreground)"
-      strokeWidth="1.4"
-    >
-      <line x1="399" y1="101" x2="390" y2="95" />
-      <line x1="399" y1="101" x2="408" y2="95" />
-      <line x1="399" y1="101" x2="399" y2="112" />
-      <circle cx="399" cy="101" r="2.4" stroke="none" />
-      <circle cx="390" cy="95" r="2.4" stroke="none" />
-      <circle cx="408" cy="95" r="2.4" stroke="none" />
-      <circle cx="399" cy="112" r="2.4" stroke="none" />
-    </g>
-    <text
-      x="399"
-      y="130"
-      textAnchor="middle"
-      style={{
-        fill: "var(--primary-foreground)",
-        fontSize: 13,
-        fontWeight: 700,
-      }}
-    >
-      Client
     </text>
   </svg>
 );
