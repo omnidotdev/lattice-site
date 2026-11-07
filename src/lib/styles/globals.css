@@ -135,15 +135,13 @@
 
 /* Hero motion: drifting brand shapes, a floating topology, edges that draw in,
    and a pulsing core. All disabled under prefers-reduced-motion. */
-@keyframes lat-drift {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
+@keyframes lat-pulse {
+  0%,
+  100% {
+    opacity: 0.16;
   }
   50% {
-    transform: translate(10px, -16px) rotate(9deg);
-  }
-  100% {
-    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.4;
   }
 }
 @keyframes lat-float {
@@ -175,8 +173,8 @@
   }
 }
 
-.lat-shape {
-  animation: lat-drift 16s ease-in-out infinite;
+.lat-pulse {
+  animation: lat-pulse 5s ease-in-out infinite;
 }
 .lat-float {
   animation: lat-float 6s ease-in-out infinite;
@@ -192,7 +190,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lat-shape,
+  .lat-pulse,
   .lat-float,
   .lat-edge,
   .lat-glow {
