@@ -31,12 +31,12 @@ const strokeIcon = {
 
 // services -> lattice (converge at 232,100), then lattice -> clients (from 288,100).
 const EDGES = [
-  "M118,43 C182,43 192,100 232,100",
-  "M118,121 C188,121 204,100 232,100",
-  "M118,199 C182,199 192,100 232,100",
-  "M288,100 C332,100 342,43 402,43",
-  "M288,100 C340,100 352,121 402,121",
-  "M288,100 C332,100 342,199 402,199",
+  "M118,43 C172,43 190,100 232,100",
+  "M118,121 C172,121 190,100 232,100",
+  "M118,199 C172,199 190,100 232,100",
+  "M288,100 C330,100 348,43 402,43",
+  "M288,100 C330,100 348,121 402,121",
+  "M288,100 C330,100 348,199 402,199",
 ];
 
 type IconName = "users" | "package" | "cart" | "globe" | "smartphone" | "bot";
@@ -188,15 +188,12 @@ const GraphDiagram = () => (
       </g>
     ))}
 
-    {/* lattice core: the brand mark, then the label and a short brief beneath */}
-    <circle
-      className="lat-glow"
-      cx="260"
-      cy="100"
-      r="40"
-      fill="var(--primary)"
-    />
-    <g transform="translate(234 74) scale(0.405)" fill="var(--primary)">
+    {/* lattice core: a solid node with the mark knocked out, label beneath */}
+    <circle cx="260" cy="100" r="35" fill="var(--primary)" />
+    <g
+      transform="translate(234 74) scale(0.405)"
+      fill="var(--primary-foreground)"
+    >
       <g transform="translate(-23,150) scale(0.1,-0.1)">
         <path d="M728 1403 c-138 -139 -138 -155 -3 -293 l85 -86 -185 -188 c-223 -227 -219 -214 -112 -322 l72 -73 57 47 57 47 -44 45 c-25 25 -45 50 -45 55 0 5 64 74 142 152 l142 143 38 -37 38 -37 53 52 52 52 -145 145 -144 145 44 45 44 45 59 -57 58 -58 44 50 c24 28 44 53 45 56 0 3 -38 42 -84 87 -79 77 -86 82 -127 82 -43 0 -48 -4 -141 -97z" />
         <path d="M1145 1166 l-50 -44 31 -34 c66 -72 72 -55 -77 -204 -73 -74 -138 -134 -143 -134 -6 0 -25 14 -43 32 l-33 32 -50 -49 -50 -49 122 -123 122 -123 -44 -45 c-53 -54 -57 -54 -92 -13 l-26 32 -54 -49 c-29 -28 -54 -55 -56 -61 -1 -5 26 -38 62 -72 58 -56 68 -62 107 -62 40 0 47 5 145 101 151 149 154 169 46 281 l-66 69 139 139 139 140 43 -42 43 -42 -50 -50 -49 -50 -31 29 -31 29 -49 -49 -49 -50 59 -62 c52 -56 63 -63 97 -63 35 0 45 7 144 109 158 163 158 163 -44 369 -83 83 -153 152 -156 152 -3 0 -28 -20 -56 -44z" />
@@ -323,9 +320,9 @@ const HeroSection = () => (
         </h1>
 
         <p className="max-w-md text-lg text-muted-foreground">
-          {app.name} federates independent GraphQL services into one graph, then
-          plans and executes every query across them. Rust-fast, self-hostable,
-          Apache-2.0.
+          {app.name} federates your services into one graph and plans every
+          query across them. A Rust gateway for GraphQL federation,
+          self-hostable and Apache-2.0.
         </p>
 
         <div className="flex flex-wrap items-center gap-3">
