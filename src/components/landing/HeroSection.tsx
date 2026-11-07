@@ -31,12 +31,12 @@ const strokeIcon = {
 
 // services -> lattice (converge at 232,100), then lattice -> clients (from 288,100).
 const EDGES = [
-  "M118,43 C172,43 190,100 232,100",
-  "M118,121 C172,121 190,100 232,100",
-  "M118,199 C172,199 190,100 232,100",
-  "M288,100 C330,100 348,43 402,43",
-  "M288,100 C330,100 348,121 402,121",
-  "M288,100 C330,100 348,199 402,199",
+  "M118,43 C172,43 190,121 232,121",
+  "M118,121 C172,121 190,121 232,121",
+  "M118,199 C172,199 190,121 232,121",
+  "M288,121 C330,121 348,43 402,43",
+  "M288,121 C330,121 348,121 402,121",
+  "M288,121 C330,121 348,199 402,199",
 ];
 
 type IconName = "users" | "package" | "cart" | "globe" | "smartphone" | "bot";
@@ -189,9 +189,9 @@ const GraphDiagram = () => (
     ))}
 
     {/* lattice core: a solid node with the mark knocked out, label beneath */}
-    <circle cx="260" cy="100" r="35" fill="var(--primary)" />
+    <circle cx="260" cy="121" r="35" fill="var(--primary)" />
     <g
-      transform="translate(234 74) scale(0.405)"
+      transform="translate(234 95) scale(0.405)"
       fill="var(--primary-foreground)"
     >
       <g transform="translate(-23,150) scale(0.1,-0.1)">
@@ -202,7 +202,7 @@ const GraphDiagram = () => (
     </g>
     <text
       x="260"
-      y="164"
+      y="180"
       textAnchor="middle"
       style={{ fill: "var(--foreground)", fontSize: 14, fontWeight: 700 }}
     >
@@ -210,7 +210,7 @@ const GraphDiagram = () => (
     </text>
     <text
       x="260"
-      y="181"
+      y="197"
       textAnchor="middle"
       style={{ fill: "var(--muted-foreground)", fontSize: 10.5 }}
     >
