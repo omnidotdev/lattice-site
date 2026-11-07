@@ -3,12 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import app from "@/lib/config/app.config";
 
-const chip = {
-  fill: "var(--card)",
-  stroke: "var(--border)",
-  strokeWidth: 1.5,
-} as const;
-// Clients consume the unified graph, so they carry a subtle brand tint.
+// Clients consume the unified graph, so they carry the brand tint.
 const clientChip = {
   fill: "var(--primary)",
   fillOpacity: 0.1,
@@ -27,14 +22,12 @@ const chipLabel = {
   fontSize: 12,
   fontWeight: 600,
 } as const;
-const iconBase = {
+const strokeIcon = {
   fill: "none",
   strokeWidth: 2,
   strokeLinecap: "round",
   strokeLinejoin: "round",
 } as const;
-const icon = { ...iconBase, stroke: "var(--muted-foreground)" } as const;
-const clientIcon = { ...iconBase, stroke: "var(--primary)" } as const;
 
 // services -> lattice (converge at 232,100), then lattice -> clients (from 288,100).
 const EDGES = [
@@ -97,25 +90,22 @@ const ICONS: Record<IconName, React.ReactNode> = {
   ),
 };
 
-type Chip = { label: string; y: number; name: IconName };
-
-const services: Chip[] = [
-  { label: "Users", y: 26, name: "users" },
-  { label: "Products", y: 104, name: "package" },
-  { label: "Orders", y: 182, name: "cart" },
+// Each source carries a subtle, distinct tint so the graph reads at a glance.
+const services: { label: string; y: number; name: IconName; tint: string }[] = [
+  { label: "Users", y: 26, name: "users", tint: "#4f93db" },
+  { label: "Products", y: 104, name: "package", tint: "#d2a13c" },
+  { label: "Orders", y: 182, name: "cart", tint: "#a07ee0" },
 ];
-const clients: Chip[] = [
+const clients: { label: string; y: number; name: IconName }[] = [
   { label: "Web", y: 26, name: "globe" },
   { label: "Mobile", y: 104, name: "smartphone" },
   { label: "AI agent", y: 182, name: "bot" },
 ];
 
 /**
- * Animated supergraph topology: services (left) federate through the Lattice
- * mark into one graph, delivered to brand-tinted clients (right). Edges meet
- * the core at its center; query dots flow (hidden until their run begins);
- * the core pulses. Colors resolve from theme variables; motion respects
- * prefers-reduced-motion.
+ * Supergraph topology: tinted sources (left) federate through the Lattice mark
+ * into one graph, delivered to brand-tinted clients (right). The only motion is
+ * the pulsing core and the query dots traveling the wires.
  */
 const GraphDiagram = () => (
   <svg
@@ -126,13 +116,8 @@ const GraphDiagram = () => (
   >
     <title>Services federated through Lattice to its clients</title>
 
-    {EDGES.map((d, i) => (
-      <path
-        key={d}
-        className="lat-edge"
-        style={{ ...edge, animationDelay: `${i * 0.12}s` }}
-        d={d}
-      />
+    {EDGES.map((d) => (
+      <path key={d} style={edge} d={d} />
     ))}
 
     {EDGES.map((d, i) => (
@@ -140,12 +125,12 @@ const GraphDiagram = () => (
         <set
           attributeName="opacity"
           to="1"
-          begin={`${0.6 + i * 0.4}s`}
+          begin={`${0.3 + i * 0.4}s`}
           fill="freeze"
         />
         <animateMotion
           dur="2.6s"
-          begin={`${0.6 + i * 0.4}s`}
+          begin={`${0.3 + i * 0.4}s`}
           repeatCount="indefinite"
           path={d}
           keyPoints="0;1"
@@ -155,14 +140,24 @@ const GraphDiagram = () => (
       </circle>
     ))}
 
-    {services.map((s, i) => (
-      <g
-        key={s.label}
-        className="lat-float"
-        style={{ animationDelay: `${i * 0.8}s` }}
-      >
-        <rect style={chip} x="12" y={s.y} width="106" height="34" rx="9" />
-        <g style={icon} transform={`translate(24 ${s.y + 10}) scale(0.6)`}>
+    {services.map((s) => (
+      <g key={s.label}>
+        <rect
+          x="12"
+          y={s.y}
+          width="106"
+          height="34"
+          rx="9"
+          fill={s.tint}
+          fillOpacity={0.1}
+          stroke={s.tint}
+          strokeOpacity={0.5}
+          strokeWidth={1.5}
+        />
+        <g
+          style={{ ...strokeIcon, stroke: s.tint }}
+          transform={`translate(24 ${s.y + 10}) scale(0.6)`}
+        >
           {ICONS[s.name]}
         </g>
         <text style={chipLabel} x="50" y={s.y + 22}>
@@ -171,12 +166,8 @@ const GraphDiagram = () => (
       </g>
     ))}
 
-    {clients.map((c, i) => (
-      <g
-        key={c.label}
-        className="lat-float"
-        style={{ animationDelay: `${0.4 + i * 0.8}s` }}
-      >
+    {clients.map((c) => (
+      <g key={c.label}>
         <rect
           style={clientChip}
           x="402"
@@ -186,7 +177,7 @@ const GraphDiagram = () => (
           rx="9"
         />
         <g
-          style={clientIcon}
+          style={{ ...strokeIcon, stroke: "var(--primary)" }}
           transform={`translate(414 ${c.y + 10}) scale(0.6)`}
         >
           {ICONS[c.name]}
@@ -197,7 +188,7 @@ const GraphDiagram = () => (
       </g>
     ))}
 
-    {/* lattice core: the brand mark with the label beneath */}
+    {/* lattice core: the brand mark, then the label and a short brief beneath */}
     <circle
       className="lat-glow"
       cx="260"
@@ -214,11 +205,19 @@ const GraphDiagram = () => (
     </g>
     <text
       x="260"
-      y="150"
+      y="164"
       textAnchor="middle"
-      style={{ fill: "var(--foreground)", fontSize: 13, fontWeight: 700 }}
+      style={{ fill: "var(--foreground)", fontSize: 14, fontWeight: 700 }}
     >
       Lattice
+    </text>
+    <text
+      x="260"
+      y="181"
+      textAnchor="middle"
+      style={{ fill: "var(--muted-foreground)", fontSize: 10.5 }}
+    >
+      federation gateway
     </text>
   </svg>
 );
@@ -272,8 +271,7 @@ const FIELD_LINKS: [number, number][] = [
 ];
 
 /**
- * Subtle linked-node field behind the hero: stationary nodes that gently pulse,
- * connected by lines, to read as Lattice's interconnectedness.
+ * Static linked-node field behind the hero: the interconnectedness motif.
  */
 const LatticeField = () => (
   <svg
@@ -294,15 +292,14 @@ const LatticeField = () => (
         />
       ))}
     </g>
-    {FIELD_NODES.map(([x, y], i) => (
+    {FIELD_NODES.map(([x, y]) => (
       <circle
         key={`${x}-${y}`}
-        className="lat-pulse"
         cx={x}
         cy={y}
         r="3.5"
         fill="var(--primary)"
-        style={{ animationDelay: `${(i % 6) * 0.6}s` }}
+        style={{ opacity: 0.22 }}
       />
     ))}
   </svg>
