@@ -26,6 +26,7 @@ const app = {
   links: {
     docs: "https://docs.omni.dev/products/lattice",
     github: "https://github.com/omnidotdev/lattice",
+    taproot: "https://taproot.omni.dev",
   },
 };
 

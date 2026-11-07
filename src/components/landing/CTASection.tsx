@@ -20,8 +20,8 @@ const CTASection = () => (
         </p>
 
         <Button size="lg" asChild>
-          <a href={app.links.docs} target="_blank" rel="noopener noreferrer">
-            Get started
+          <a href={app.links.taproot} target="_blank" rel="noopener noreferrer">
+            Explore taproot
             <ArrowRight className="ml-2 size-4" />
           </a>
         </Button>

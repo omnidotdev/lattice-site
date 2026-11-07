@@ -46,10 +46,6 @@ const FeaturesSection = () => (
       </div>
 
       <div className="py-16">
-        <p className="mb-8 font-mono text-muted-foreground text-xs uppercase tracking-wider">
-          {"// what it does"}
-        </p>
-
         <div className="grid">
           {features.map(({ title, tag, description }) => (
             <div
