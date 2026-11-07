@@ -7,13 +7,15 @@ import { useTheme } from "@/providers/ThemeProvider";
  * Theme toggle.
  */
 const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
-
-  const toggleTheme = () =>
-    theme === "dark" ? setTheme("light") : setTheme("dark");
+  const { toggleTheme } = useTheme();
 
   return (
-    <Button onClick={toggleTheme} variant="ghost" aria-label="Toggle theme">
+    <Button
+      onClick={toggleTheme}
+      variant="ghost"
+      aria-label="Toggle theme"
+      title="Toggle theme (T)"
+    >
       <Moon className="hidden size-4 dark:block" />
       <Sun className="size-4 dark:hidden" />
     </Button>

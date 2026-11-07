@@ -1,4 +1,4 @@
-import { createContext, use, useCallback, useState } from "react";
+import { createContext, use, useCallback, useEffect, useState } from "react";
 
 import { setTheme as setThemeServerFn } from "@/server/functions/theme";
 
@@ -8,6 +8,7 @@ import type { Theme } from "@/server/functions/theme";
 interface ThemeContext {
   theme: Theme;
   setTheme: (val: Theme) => void;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContext | null>(null);
@@ -31,7 +32,36 @@ const ThemeProvider = ({
     setThemeServerFn({ data: val });
   }, []);
 
-  return <ThemeContext value={{ theme, setTheme }}>{children}</ThemeContext>;
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }, [theme, setTheme]);
+
+  // Global `t` shortcut toggles the theme, matching the Omni app convention.
+  // Ignored while typing in a form field or editable element.
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "t" || e.metaKey || e.ctrlKey || e.altKey) return;
+
+      const target = e.target as HTMLElement | null;
+      if (
+        target?.isContentEditable ||
+        /^(?:input|textarea|select)$/i.test(target?.tagName ?? "")
+      ) {
+        return;
+      }
+
+      toggleTheme();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [toggleTheme]);
+
+  return (
+    <ThemeContext value={{ theme, setTheme, toggleTheme }}>
+      {children}
+    </ThemeContext>
+  );
 };
 
 export const useTheme = () => {
