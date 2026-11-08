@@ -320,8 +320,8 @@ const HeroSection = () => (
         </h1>
 
         <p className="max-w-md text-lg text-muted-foreground">
-          {app.name} federates your services into one graph and plans every
-          query across them. A Rust gateway for GraphQL federation,
+          {app.name} federates your GraphQL and REST services into one graph and
+          plans every query across them. A Rust federation gateway,
           self-hostable and Apache-2.0.
         </p>
 

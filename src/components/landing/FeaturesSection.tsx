@@ -1,5 +1,6 @@
 const strip = [
   "Federation v2",
+  "REST connectors",
   "Subscriptions + @defer",
   "WASI plugins",
   "MCP endpoint",
@@ -12,6 +13,12 @@ const features = [
     tag: "federation v2",
     description:
       "Plans and executes one client query across many subgraphs, fetching only what each service owns and stitching the result.",
+  },
+  {
+    title: "Any service, one graph",
+    tag: "graphql + rest",
+    description:
+      "Federate GraphQL subgraphs and REST APIs side by side. Map a field to an HTTP endpoint and Lattice plans and calls it like any other subgraph.",
   },
   {
     title: "Real-time",
