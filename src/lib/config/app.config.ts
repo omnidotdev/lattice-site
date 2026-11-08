@@ -10,6 +10,7 @@ const app = {
     "A comprehensive omnigraph toolkit for managing and connecting various API services under a unified framework, addressing the challenges of API service sprawl.",
   keywords: [
     "graphql",
+    "rest",
     "federation",
     "api",
     "gateway",
