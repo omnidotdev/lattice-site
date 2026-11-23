@@ -1,7 +1,7 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { Link } from "@tanstack/react-router";
 
 import { Logo, ThemeToggle } from "@/components/core";
-import { Button } from "@/components/ui/button";
 import app from "@/lib/config/app.config";
 
 /**
